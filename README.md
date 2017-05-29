@@ -100,11 +100,11 @@ Add something like this to your deployment script/code:
 ```bash
 LOCKNAME=mysite
 
-php artisan lock:set --wait ${LOCKNAME}  # command will not return until a lock is obtained or the timeout is reached
+php artisan llock:set --wait ${LOCKNAME}  # command will not return until a lock is obtained or the timeout is reached
 
 # deploy steps here....
 
-php artisan lock:free ${LOCKNAME}
+php artisan llock:free ${LOCKNAME}
 
 ```
 
@@ -115,11 +115,11 @@ timeout or other error.
 Use something like this for your CRON/scheduler entry:
 
 ```bash
-LOCKNAME=mysite php artisan lock:set ${LOCKNAME} && php artisan schedule:run; php artisan lock:free ${LOCKNAME}
+LOCKNAME=mysite php artisan llock:set ${LOCKNAME} && php artisan schedule:run; php artisan llock:free ${LOCKNAME}
 
 # or the mostly equivalent
 
-if php artisan lock:set mysite; then php artisan run; fi; php artisan lock:free mysite
+if php artisan llock:set mysite; then php artisan run; fi; php artisan llock:free mysite
 
 ```
 
