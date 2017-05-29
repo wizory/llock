@@ -88,12 +88,7 @@ class LlockSet extends Command
 
                 exit(Lock::SUCCESS);
             }
-
-            if (empty($lock) && $this->option('wait')) {
-                $this->info('Waiting...');  # TODO add retry and timeout info
-            } else {
-
-            }
+        
         } catch (\Exception $e) {
             $this->debug($e->getTraceAsString());
 
