@@ -4,6 +4,7 @@ namespace Wizory\Llock\Console\Commands;
 
 use Illuminate\Console\Command;
 use Log;
+use Wizory\Llock\Models\Lock;
 
 class LlockStatus extends Command {
     /**
@@ -33,10 +34,10 @@ class LlockStatus extends Command {
     public function handle() {
         $this->info('[ Llock Status ]');
 
-        $this->info('Ok.');
+        $headers = ['Name', 'Created'];
 
-        # TODO use $this->>table
+        $locks = Lock::all(['name', 'created_at'])->toArray();
 
-        # TODO get all active locks from db and print (columns: name, created)
+        $this->table($headers, $locks);
     }
 }
