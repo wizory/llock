@@ -115,7 +115,7 @@ timeout or other error.
 Use something like this for your CRON/scheduler entry:
 
 ```bash
-LOCKNAME=mysite php artisan llock:set ${LOCKNAME} && php artisan schedule:run; php artisan llock:free ${LOCKNAME}
+php artisan llock:set mysite && php artisan schedule:run; php artisan llock:free mysite
 
 # or the mostly equivalent
 
