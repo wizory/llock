@@ -2,7 +2,9 @@
 
 namespace Wizory\Llock\Models;
 
+use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
+use Log;
 
 /**
  * Class Lock
@@ -63,5 +65,17 @@ class Lock extends Model {
         # TODO might want to return the lock that was freed and null otherwise so the caller can tell what happened
 
         # otherwise the result is the same...lock is gone (or never existed). ;)
+    }
+
+    /**
+     * Logs messages to console / laravel based on config
+     *
+     * @param Command $command
+     * @param $message
+     */
+    public static function log(Command $command, $message) {
+        if ($command->option('verbose')) $command->info($message);
+
+        Log::debug($message);
     }
 }

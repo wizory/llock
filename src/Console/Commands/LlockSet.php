@@ -34,7 +34,7 @@ class LlockSet extends Command
     }
 
     public function setLock($name) {
-        $this->info('Attempting to set lock ' . $name);
+        Lock::Log($this, 'Attempting to set lock ' . $name);
 
         return Lock::set($name);
     }
@@ -55,7 +55,7 @@ class LlockSet extends Command
 
             # TODO DRY up this block
             if (empty($lock)) {
-                $this->info('Lock already exists');
+                Lock::Log($this, 'Lock already exists');
 
                 if ($this->option('wait')) {
 
@@ -63,34 +63,34 @@ class LlockSet extends Command
 
                     # TODO output how long we've waited out of the total wait?
                     while (time() - $start < $timeout) {
-                        $this->info("Waiting ${retry} seconds...");
+                        Lock::Log($this,"Waiting ${retry} seconds...");
 
                         sleep($retry);
 
                         $lock = $this->setLock($name);
 
                         if (! empty($lock)) {
-                            $this->info('Lock created successfully');
+                            Lock::Log($this, 'Lock created successfully');
 
                             exit(Lock::SUCCESS);
                         }
                     }
 
-                    $this->info("Failed to obtain lock...timeout of ${timeout} seconds reached.");
+                    Lock::Log($this, "Failed to obtain lock...timeout of ${timeout} seconds reached.");
                     exit(Lock::FAILED);
 
                 } else {
-                    $this->info('Failed to obtain lock...use --wait to wait for it.');
+                    Lock::Log($this, 'Failed to obtain lock...use --wait to wait for it.');
                     exit(Lock::FAILED);
                 }
             } else {
-                $this->info('Lock created successfully');
+                Lock::Log($this, 'Lock created successfully');
 
                 exit(Lock::SUCCESS);
             }
         
         } catch (\Exception $e) {
-            $this->debug($e->getTraceAsString());
+            Log::error("Exception obtaining lock ${name}: " . $e->getTraceAsString());
 
             exit (Lock::ERROR);
         }

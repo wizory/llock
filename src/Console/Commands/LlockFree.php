@@ -14,7 +14,7 @@ class LlockFree extends Command
      * @var string
      */
     protected $signature = 'llock:free {name}';
-
+    
     /**
      * The console command description.
      *
@@ -37,17 +37,14 @@ class LlockFree extends Command
      * @return mixed
      */
     public function handle() {
-        # TODO should we use $this to log instead?
-        //Log::debug('Attempting to free lock ' . $this->argument('name'));
-
         $name = $this->argument('name');
 
-        $this->info('Attempting to free lock ' . $name);
+        Lock::log($this, 'Attempting to free lock ' . $name);
 
         try {
             Lock::free($this->argument('name'));
         } catch (\Exception $e) {
-
+            // TODO catch database exceptions, etc. here?
         }
     }
 }
