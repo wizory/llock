@@ -14,7 +14,7 @@ class LlockFree extends Command
      * @var string
      */
     protected $signature = 'llock:free {name}';
-    
+
     /**
      * The console command description.
      *
