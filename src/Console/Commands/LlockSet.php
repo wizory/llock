@@ -88,9 +88,14 @@ class LlockSet extends Command
 
                 exit(Lock::SUCCESS);
             }
-        
+        // only log a note since this is an expected event (but it is still an error as far as getting the lock)
+        } catch (\Illuminate\Database\QueryException $e) {
+            Log::debug('Lock already in progress...');
+
+            exit (Lock::ERROR);
+
         } catch (\Exception $e) {
-            Log::error("Exception obtaining lock ${name}: " . $e->getTraceAsString());
+            Log::error($e->getMessage() . " exception obtaining lock ${name}: " . $e->getTraceAsString());
 
             exit (Lock::ERROR);
         }
