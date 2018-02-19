@@ -39,6 +39,6 @@ class LlockInstall extends Command {
         ));
 
         # run migration(s)
-        $this->call('migrate');
+        $this->call('migrate', array('--seed' => true, '--force' => true));
     }
 }
