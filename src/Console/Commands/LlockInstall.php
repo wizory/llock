@@ -31,14 +31,19 @@ class LlockInstall extends Command {
      * @return mixed
      */
     public function handle() {
-        $this->info('[ Llock Installation ]');
+        $this->info('[ 🔒 Llock Installation 🔒 ]');
 
         # publish assets
+        $this->info('☑︎ publishing assets...');
         $this->call('vendor:publish', array(
             '--provider' => 'Wizory\Llock\LlockServiceProvider',
         ));
 
         # run migration(s)
-        $this->call('migrate', array('--seed' => true, '--force' => true));
+        $this->info('☑︎ running migrations...');
+        $this->call('migrate', array(
+            '--path' => 'vendor/wizory/llock/src/database/migrations',
+            '--force' => true,
+        ));
     }
 }
