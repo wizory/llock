@@ -12,8 +12,6 @@ class LlockWaitingTest extends DbTestCase {
         $this->app['config']->set('llock.wait-retry', '1');
         $this->app['config']->set('llock.timeout', '10');
 
-        $result = null;
-
         $pid = pcntl_fork();
 
         if ($pid) { // parent
@@ -69,8 +67,6 @@ class LlockWaitingTest extends DbTestCase {
 
         $this->app['config']->set('llock.wait-retry', '1');
         $this->app['config']->set('llock.timeout', '3');
-
-        $result = null;
 
         $pid = pcntl_fork();
 
