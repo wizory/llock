@@ -72,32 +72,33 @@ class LlockSet extends Command
                         if (! empty($lock)) {
                             Lock::Log($this, 'Lock created successfully');
 
-                            exit(Lock::SUCCESS);
+                            return(Lock::SUCCESS);
                         }
                     }
 
                     Lock::Log($this, "Failed to obtain lock...timeout of ${timeout} seconds reached.");
-                    exit(Lock::FAILED);
+                    return(Lock::FAILED);
 
                 } else {
                     Lock::Log($this, 'Failed to obtain lock...use --wait to wait for it.');
-                    exit(Lock::FAILED);
+                    return(Lock::FAILED);
                 }
             } else {
                 Lock::Log($this, 'Lock created successfully');
 
-                exit(Lock::SUCCESS);
+                return(Lock::SUCCESS);
             }
         // only log a note since this is an expected event (but it is still an error as far as getting the lock)
         } catch (\Illuminate\Database\QueryException $e) {
             Log::debug('Lock already in progress...');
+//            Log::debug($e);
 
-            exit (Lock::ERROR);
+            return(Lock::ERROR);
 
         } catch (\Exception $e) {
             Log::error($e->getMessage() . " exception obtaining lock ${name}: " . $e->getTraceAsString());
 
-            exit (Lock::ERROR);
+            return(Lock::ERROR);
         }
     }
 }

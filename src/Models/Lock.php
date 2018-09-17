@@ -37,18 +37,16 @@ class Lock extends Model {
      * @return lock if successful, null if it already exists
      */
     public static function set($name) {
-        return \DB::transaction(function() use ($name) {
-            $lock = Lock::lockForUpdate()->where('name', $name)->get();
+        $lock = Lock::where('name', $name)->lockForUpdate()->get();
 
-            # if no lock exists, create it and return it
-            if ($lock->isEmpty()) {
-                $lock = Lock::create(['name' => $name]);
+        # if no lock exists, create it and return it
+        if ($lock->isEmpty()) {
+            $lock = Lock::create(['name' => $name]);
 
-                return $lock;
-            }
+            return $lock;
+        }
 
-            return null;
-        });
+        return null;
     }
 
     /**
@@ -57,18 +55,16 @@ class Lock extends Model {
      * @param $name
      */
     public static function free($name) {
-        return \DB::transaction(function() use ($name) {
-            $lock = Lock::lockForUpdate()->where('name', $name)->get();
+        $lock = Lock::where('name', $name)->lockForUpdate()->get();
 
-            # if we have an existing lock with that name, remove it
-            if (! $lock->isEmpty()) {
-                $lock->first()->delete();
-            }
+        # if we have an existing lock with that name, remove it
+        if (!$lock->isEmpty()) {
+            $lock->first()->delete();
+        }
 
-            # TODO might want to return the lock that was freed and null otherwise so the caller can tell what happened
+        # TODO might want to return the lock that was freed and null otherwise so the caller can tell what happened
 
-            # otherwise the result is the same...lock is gone (or never existed). ;)
-        });
+        # otherwise the result is the same...lock is gone (or never existed). ;)
     }
 
     /**
