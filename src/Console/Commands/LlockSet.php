@@ -91,7 +91,7 @@ class LlockSet extends Command
         // only log a note since this is an expected event (but it is still an error as far as getting the lock)
         } catch (\Illuminate\Database\QueryException $e) {
             Log::debug('Lock already in progress...');
-            Log::debug($e);
+//            Log::debug($e);
 
             return(Lock::ERROR);
 

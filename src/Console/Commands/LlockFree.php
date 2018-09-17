@@ -46,7 +46,7 @@ class LlockFree extends Command
             // only log a note since this is an expected event (but it is still an error as far as freeing the lock)
         } catch (\Illuminate\Database\QueryException $e) {
             Log::debug('Lock free already in progress...');
-            Log::debug($e);
+//            Log::debug($e);
 
             return(Lock::ERROR);
 
