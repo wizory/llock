@@ -17,11 +17,6 @@
   "autoload": {
     "psr-4": {
       "Wizory\\Llock\\": "src"
-    },
-    "autoload-dev": {
-      "psr-4": {
-        "Wizory\\Llock\\Test\\": "tests"
-      }
     }
   },
   "authors": [
