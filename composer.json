@@ -12,7 +12,8 @@
     "fzaninotto/faker": "~1.4",
     "mockery/mockery": "0.9.* || ^1.0",
     "phpspec/phpspec": "~2.1 || ~5.1",
-    "laravel/laravel": "5.1.* || 6.*"
+    "laravel/laravel": "5.1.* || 6.*",
+    "orchestra/testbench": "4.*"
   },
   "autoload": {
     "psr-4": {

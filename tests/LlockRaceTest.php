@@ -37,7 +37,7 @@ class LlockRaceTest extends DbTestCase {
 
                     fwrite(STDERR, print_r("- obtained parent lock\n", TRUE));
 
-                    $this->seeInDatabase('llocks', ['name' => $lockName]);
+                    $this->assertDatabaseHas('llocks', ['name' => $lockName]);
 
                     sleep($lock_sleep);
 
@@ -49,16 +49,16 @@ class LlockRaceTest extends DbTestCase {
 
                     if ($resultFree == Lock::SUCCESS) {
                         fwrite(STDERR, print_r("- freed parent lock\n", TRUE));
-                        $this->dontSeeInDatabase('llocks', ['name' => $lockName]);
+                        $this->assertDatabaseMissing('llocks', ['name' => $lockName]);
                     } elseif ($resultFree == LOCK::FAILED) {
                         fwrite(STDERR, print_r("- failed to free parent lock\n", TRUE));
-                        $this->seeInDatabase('llocks', ['name' => $lockName]);
+                        $this->assertDatabaseHas('llocks', ['name' => $lockName]);
                     } elseif ($resultFree == LOCK::ERROR) {
                         fwrite(STDERR, print_r("- error freeing parent lock\n", TRUE));
-                        $this->seeInDatabase('llocks', ['name' => $lockName]);
+                        $this->assertDatabaseHas('llocks', ['name' => $lockName]);
                     } else {
                         fwrite(STDERR, print_r("- unknown result freeing parent lock\n", TRUE));
-                        $this->seeInDatabase('llocks', ['name' => $lockName]);
+                        $this->assertDatabaseHas('llocks', ['name' => $lockName]);
                     }
 
                 } elseif ($resultSet == LOCK::FAILED) {
@@ -67,7 +67,7 @@ class LlockRaceTest extends DbTestCase {
                     fwrite(STDERR, print_r("- error setting parent lock\n", TRUE));
                 } else {
                     fwrite(STDERR, print_r("- unknown result setting parent lock\n", TRUE));
-                    $this->dontSeeInDatabase('llocks', ['name' => $lockName]);
+                    $this->assertDatabaseMissing('llocks', ['name' => $lockName]);
                 }
 
             } else { // child
@@ -88,7 +88,7 @@ class LlockRaceTest extends DbTestCase {
 
                     fwrite(STDERR, print_r("- obtained child lock\n", TRUE));
 
-                    $this->seeInDatabase('llocks', ['name' => $lockName]);
+                    $this->assertDatabaseHas('llocks', ['name' => $lockName]);
 
                     sleep($lock_sleep);
 
@@ -100,16 +100,16 @@ class LlockRaceTest extends DbTestCase {
 
                     if ($resultFree == Lock::SUCCESS) {
                         fwrite(STDERR, print_r("- freed child lock\n", TRUE));
-                        $this->dontSeeInDatabase('llocks', ['name' => $lockName]);
+                        $this->assertDatabaseMissing('llocks', ['name' => $lockName]);
                     } elseif ($resultFree == LOCK::FAILED) {
                         fwrite(STDERR, print_r("- failed to free child lock\n", TRUE));
-                        $this->seeInDatabase('llocks', ['name' => $lockName]);
+                        $this->assertDatabaseHas('llocks', ['name' => $lockName]);
                     } elseif ($resultFree == LOCK::ERROR) {
                         fwrite(STDERR, print_r("- error freeing child lock\n", TRUE));
-                        $this->seeInDatabase('llocks', ['name' => $lockName]);
+                        $this->assertDatabaseHas('llocks', ['name' => $lockName]);
                     } else {
                         fwrite(STDERR, print_r("- unknown result freeing child lock\n", TRUE));
-                        $this->seeInDatabase('llocks', ['name' => $lockName]);
+                        $this->assertDatabaseHas('llocks', ['name' => $lockName]);
                     }
 
                 } elseif ($resultSet == LOCK::FAILED) {
@@ -118,7 +118,7 @@ class LlockRaceTest extends DbTestCase {
                     fwrite(STDERR, print_r("- error setting child lock\n", TRUE));
                 } else {
                     fwrite(STDERR, print_r("- unknown result setting child lock\n", TRUE));
-                    $this->dontSeeInDatabase('llocks', ['name' => $lockName]);
+                    $this->assertDatabaseMissing('llocks', ['name' => $lockName]);
                 }
 
                 die();  // kill off child process so phpUnit doesn't get confused
@@ -126,7 +126,7 @@ class LlockRaceTest extends DbTestCase {
 
             pcntl_wait($status); // protect against Zombie Children
 
-            $this->dontSeeInDatabase('llocks', ['name' => $lockName]);
+            $this->assertDatabaseMissing('llocks', ['name' => $lockName]);
 
         }
     }
@@ -166,7 +166,7 @@ class LlockRaceTest extends DbTestCase {
 
                         fwrite(STDERR, print_r("- obtained child lock\n", TRUE));
 
-                        $this->seeInDatabase('llocks', ['name' => $lockName]);
+                        $this->assertDatabaseHas('llocks', ['name' => $lockName]);
 
                         sleep($lock_sleep);
 
@@ -178,16 +178,16 @@ class LlockRaceTest extends DbTestCase {
 
                         if ($resultFree == Lock::SUCCESS) {
                             fwrite(STDERR, print_r("- freed child lock\n", TRUE));
-                            $this->dontSeeInDatabase('llocks', ['name' => $lockName]);
+                            $this->assertDatabaseMissing('llocks', ['name' => $lockName]);
                         } elseif ($resultFree == LOCK::FAILED) {
                             fwrite(STDERR, print_r("- failed to free child lock\n", TRUE));
-                            $this->seeInDatabase('llocks', ['name' => $lockName]);
+                            $this->assertDatabaseHas('llocks', ['name' => $lockName]);
                         } elseif ($resultFree == LOCK::ERROR) {
                             fwrite(STDERR, print_r("- error freeing child lock\n", TRUE));
-                            $this->seeInDatabase('llocks', ['name' => $lockName]);
+                            $this->assertDatabaseHas('llocks', ['name' => $lockName]);
                         } else {
                             fwrite(STDERR, print_r("- unknown result freeing child lock\n", TRUE));
-                            $this->seeInDatabase('llocks', ['name' => $lockName]);
+                            $this->assertDatabaseHas('llocks', ['name' => $lockName]);
                         }
 
                     } elseif ($resultSet == LOCK::FAILED) {
@@ -196,7 +196,7 @@ class LlockRaceTest extends DbTestCase {
                         fwrite(STDERR, print_r("- error setting child lock\n", TRUE));
                     } else {
                         fwrite(STDERR, print_r("- unknown result setting child lock\n", TRUE));
-                        $this->dontSeeInDatabase('llocks', ['name' => $lockName]);
+                        $this->assertDatabaseMissing('llocks', ['name' => $lockName]);
                     }
 
                     die();  // kill off child process so phpUnit doesn't get confused
