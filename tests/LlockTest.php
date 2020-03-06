@@ -13,7 +13,7 @@ class LlockTest extends DbTestCase {
             'name' => $lockName,
         ));
 
-        $this->seeInDatabase('llocks', ['name' => $lockName]);
+        $this->assertDatabaseHas('llocks', ['name' => $lockName]);
         $this->assertEquals(Lock::SUCCESS, $result);
     }
 
@@ -27,7 +27,7 @@ class LlockTest extends DbTestCase {
             'name' => $lockName,
         ));
 
-        $this->seeInDatabase('llocks', ['name' => $lockName]);
+        $this->assertDatabaseHas('llocks', ['name' => $lockName]);
         $this->assertEquals(Lock::SUCCESS, $resultInitial);
         $this->assertEquals(Lock::FAILED, $resultDupe);
     }
@@ -43,7 +43,7 @@ class LlockTest extends DbTestCase {
             'name' => $lockName,
         ));
 
-        $this->dontSeeInDatabase('llocks', ['name' => $lockName]);
+        $this->assertDatabaseMissing('llocks', ['name' => $lockName]);
         $this->assertEquals(0, $result);
     }
 
@@ -61,7 +61,7 @@ class LlockTest extends DbTestCase {
             'name' => $lockName,
         ));
 
-        $this->dontSeeInDatabase('llocks', ['name' => $lockName]);
+        $this->assertDatabaseMissing('llocks', ['name' => $lockName]);
         $this->assertEquals(0, $resultDupe);
     }
 

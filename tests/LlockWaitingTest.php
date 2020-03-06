@@ -18,7 +18,7 @@ class LlockWaitingTest extends DbTestCase {
 
             sleep(2);  // give child time to set lock
 
-            $this->seeInDatabase('llocks', ['name' => $lockName]);
+            $this->assertDatabaseHas('llocks', ['name' => $lockName]);
 
             fwrite(STDERR, print_r("- setting parent lock\n", TRUE));
             $resultSet = Artisan::call('llock:set', array(
@@ -26,7 +26,7 @@ class LlockWaitingTest extends DbTestCase {
                 '--wait' => null,
             ));
 
-            $this->seeInDatabase('llocks', ['name' => $lockName]);
+            $this->assertDatabaseHas('llocks', ['name' => $lockName]);
             $this->assertEquals(Lock::SUCCESS, $resultSet);
 
             fwrite(STDERR, print_r("- freeing parent lock\n", TRUE));
@@ -34,7 +34,7 @@ class LlockWaitingTest extends DbTestCase {
                 'name' => $lockName,
             ));
 
-            $this->dontSeeInDatabase('llocks', ['name' => $lockName]);
+            $this->assertDatabaseMissing('llocks', ['name' => $lockName]);
             $this->assertEquals(Lock::SUCCESS, $resultFree);
 
             pcntl_wait($status); // protect against Zombie Children
@@ -77,7 +77,7 @@ class LlockWaitingTest extends DbTestCase {
                 'name' => $lockName,
             ));
 
-            $this->seeInDatabase('llocks', ['name' => $lockName]);
+            $this->assertDatabaseHas('llocks', ['name' => $lockName]);
             $this->assertEquals(Lock::SUCCESS, $resultSet);
 
             sleep(7);
@@ -87,7 +87,7 @@ class LlockWaitingTest extends DbTestCase {
                 'name' => $lockName,
             ));
 
-            $this->dontSeeInDatabase('llocks', ['name' => $lockName]);
+            $this->assertDatabaseMissing('llocks', ['name' => $lockName]);
             $this->assertEquals(Lock::SUCCESS, $resultFree);
 
             pcntl_wait($status); // protect against Zombie Children
@@ -96,7 +96,7 @@ class LlockWaitingTest extends DbTestCase {
 
             sleep(2);  // give parent time to set lock
 
-            $this->seeInDatabase('llocks', ['name' => $lockName]);
+            $this->assertDatabaseHas('llocks', ['name' => $lockName]);
 
             fwrite(STDERR, print_r("- setting child lock\n", TRUE));
 

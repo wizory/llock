@@ -1,10 +1,6 @@
 <?php
 
-
-use Illuminate\Filesystem\ClassFinder;
-use Illuminate\Filesystem\Filesystem;
-
-abstract class DbTestCase extends Illuminate\Foundation\Testing\TestCase {
+abstract class DbTestCase extends Orchestra\Testbench\TestCase {
     /**
      * Boots the application.
      *
@@ -25,7 +21,7 @@ abstract class DbTestCase extends Illuminate\Foundation\Testing\TestCase {
      *
      * @return void
      */
-    public function setUp() {
+    public function setUp(): void {
         parent::setUp();
 
         $db = 'testing.db';
@@ -35,8 +31,10 @@ abstract class DbTestCase extends Illuminate\Foundation\Testing\TestCase {
         $this->app['config']->set('database.default', 'sqlite');
         $this->app['config']->set('database.connections.sqlite.database', 'testing.db');
         $this->app['config']->set('debug', 'true');
+		
+		$this->loadMigrationsFrom(__DIR__ . '/../src/database/migrations');
 
-        $this->migrate();
+		//$this->migrate();
     }
 
     /**
